@@ -1,0 +1,68 @@
+.main-column{
+	
+}
+.column-layout{ 
+	max-width: 1300px;
+	background-color: #FFF;
+	margin: 40px auto 0 auto;
+	line-height: 1.65;
+	padding: 20px 50px;
+	display: flex;
+}
+.top{
+	
+	
+}
+.left{
+	flex: 2;
+	float: left;
+   	width: 150px;
+    	background: white;
+    	height: 450px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	
+    	
+}
+
+.chats{
+	
+    	height: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.form-row{
+	padding: 10px;
+	display: flex;
+}
+form-row label{
+	padding-right:10px;
+}
+.form-row input{
+	padding-right:10px;
+	flex:1;
+}
+.me .them{
+	box-sizing = border-box;
+	margin: 15px;
+	width:max-content;
+}
+.Me{
+	margin-left: 100px;
+  	background: yellow;
+	text-align: right;
+}
+.Them{
+	margin-right: 100px;
+	text-align: left;
+  	background: blue;
+}
+.right{
+	flex: 7;
+	float: left;
+    	width: 150px;
+    	background: white;
+    	height: 450px;
+    	padding-left:20px;
+}
+
