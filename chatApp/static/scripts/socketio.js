@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
-    
+    var username = document.querySelector(".username").innerHTML;
     socket.on('connect', () => {
-        socket.send('I am connected');
+        socket.send(`${username}~ is connected`);
     });
 
     socket.on('message', (msg) => {
@@ -18,8 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userInput = document.querySelector('#user-input');
 
     sendButton.onclick = () => {
-        socket.send(userInput.value);
+        socket.send(`${username}~` + userInput.value);
         userInput.value="";
     };
-
 });

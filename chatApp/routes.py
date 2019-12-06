@@ -1,9 +1,9 @@
 from flask import render_template, url_for, flash, redirect, request
-from chatApp import app, db, bcrypt
+from chatApp import app, db, bcrypt, socketio
 from chatApp.forms import RegistrationForm, LoginForm
 from chatApp.models import User
 from flask_login import login_user, current_user, logout_user, login_required
-
+from flask_socketio import SocketIO, send
 
 # posts = [
 #     {
@@ -73,3 +73,15 @@ def logout():
 @login_required
 def account():
     return render_template('account.html', title='Account')
+
+''' SOCKET.IO EVENTS '''
+
+@socketio.on('message')
+def handleMessage(msg):
+    print("\n\nMessage:", msg, "\n\n")
+    send(msg.split('~')[0] + ": " + msg.split('~')[-1], broadcast=True)
+    
+@app.route('/')
+@app.route('/global-chat')
+def globalChat():
+    return render_template('index.html', title="Global Chat")
