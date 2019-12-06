@@ -1,16 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-    <!-- {% for post in posts %}
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
-            </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
-          </div>
-        </article>
-    {% endfor %} -->
-  <h1>Home Page</h1>
+
+  {% if current_user.is_authenticated %}
+    <h2>Global Chat</h2>
+    <ul id="messages-list" class="list-unstyled">
+
+    </ul>
+    <div class="input-group mb-3">
+      <input type="text" name="" id="user-input" class="form-control" placeholder="Enter your message">
+      <div class="input-group-append">
+        <input type = "submit" id="send-btn" class="btn btn-primary btn-lg" value="Send" >
+      </div>
+    </div>
+    
+  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/socketio.js')}}"></script>
+    {% endif %}
+
 {% endblock content %}
