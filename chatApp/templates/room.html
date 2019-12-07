@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+	{% if current_user.is_authenticated %}
+		<h2 id="room-name">{{ room|title }}</h2>
+		<ul id="messages-list" class="list-unstyled">
+
+			</ul>
+			<div class="input-group mb-3">
+				<input type="text" name="" id="user-input" class="form-control" placeholder="Enter your message">
+				<div class="input-group-append">
+					<input type = "submit" id="send-btn" class="btn btn-primary btn-lg" value="Send" >
+				</div>
+			</div>
+
+
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+			<script src="{{ url_for('static', filename='scripts/chatroom.js')}}"></script>
+			<script>
+				var roomName = `{{ room }}`;
+			</script>
+	{% else %}
+		<p>Please log in</p>
+	{% endif %}
+{% endblock %}

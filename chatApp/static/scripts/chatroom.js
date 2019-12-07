@@ -1,26 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Connecting
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-    var username = document.querySelector(".username").innerHTML;
-    socket.on('connect', () => {
-        socket.send(`${username}~ is connected`);
-    });
+document.addEventListener("DOMContentLoaded", () => {
 
-    // Display received message
+	// Connecting
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+	var username = document.querySelector(".username").innerHTML;
+	
+	// Display received message
     socket.on('message', (msg) => {
         console.log(`Message received: ${msg}`);
         msg = JSON.parse(msg);
         if(msg['room'] !== roomName) {
             console.log("I don't know what to do");
         }
-        if(msg['sender'] === 'SYSTEM') {
-            let msgDisplay = document.createElement('p');
-            msgDisplay.innerHTML = msg['content'];
-            let listItem = document.createElement('li');
-            listItem.appendChild(msgDisplay);
-            document.getElementById('messages-list').appendChild(listItem);
-        }
-        else if(msg['room'] === roomName) {
+        else {
             let msgDisplay = document.createElement('p');
             msgDisplay.innerText = `${msg["sender"]} (${msg["timestamp"]}): ${msg["content"]}`;
             let listItem = document.createElement('li');
@@ -29,24 +20,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Select user input field and send button from DOM
-    let sendButton = document.querySelector('#send-btn');
-    let userInput = document.querySelector('#user-input');
 
-    // Function to send a message
-    sendMessage = () => {
+	 // Select user input field and send button from DOM
+	 let sendButton = document.querySelector('#send-btn');
+	 let userInput = document.querySelector('#user-input');
+
+	 // Function to send a message
+	 sendMessage = () => {
         if(userInput.value !== '') {
             msg = {
                 sender:username,
                 content:userInput.value,
             };
-            msg['room'] = roomName;
+            if(roomName) {
+                msg['room'] = roomName;
+            }
+            else {
+                console.log("ERROR");
+            }
             socket.send(JSON.stringify(msg));
             userInput.value="";
         }
-    };
-
-    // Listener for send action: Enter key
+	};
+	
+	// Listener for send action: Enter key
     userInput.addEventListener("keyup", (e) => {
         if(e.keyCode === 13) {
             if(userInput === document.activeElement) {
@@ -61,8 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sendMessage();
     };
 
-    
-    // Listener for room-opt clicks
+	// Listener for room-opt clicks
 	document.querySelectorAll('.room-opt').forEach(li => {
 		
 	    li.onclick = () => {
@@ -74,8 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	        else {
 	            leaveRoom(roomName);
 	            joinRoom(newRoom);
-                roomName = newRoom;
-                document.querySelector('#room-name').innerHTML = newRoom;
+	            roomName = newRoom;
 	        }
 	    }
 	});
@@ -99,4 +94,4 @@ document.addEventListener('DOMContentLoaded', () => {
 		socket.emit('join', JSON.stringify(join_msg));
 	}
 
-});
+})
