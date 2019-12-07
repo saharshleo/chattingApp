@@ -1,0 +1,7 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#sidebar p:hover {
+    background-color: #ffc107;
+}

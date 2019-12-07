@@ -15,5 +15,12 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
-        return "('{}', '{}', '{}')".format(self.username, self.email, self.password)
+        return "('{}', '{}')".format(self.username, self.email)
 
+
+class Rooms(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	roomname = db.Column(db.String(250), unique=True, nullable=False)
+	message = db.Column(db.String(250), nullable=False)
+	sender = db.Column(db.String(20), nullable=False)
+	time_stamp = db.Column(db.String(100), nullable=False)

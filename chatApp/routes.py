@@ -1,35 +1,22 @@
+import os
+import time
 from flask import render_template, url_for, flash, redirect, request
 from chatApp import app, db, bcrypt, socketio
 from chatApp.forms import RegistrationForm, LoginForm
-from chatApp.models import User
+from chatApp.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_socketio import SocketIO, send
 
-# posts = [
-#     {
-#         'author': 'Corey Schafer',
-#         'title': 'Blog Post 1',
-#         'content': 'First post content',
-#         'date_posted': 'April 20, 2018'
-#     },
-#     {
-#         'author': 'Jane Doe',
-#         'title': 'Blog Post 2',
-#         'content': 'Second post content',
-#         'date_posted': 'April 21, 2018'
-#     }
-# ]
-
+ROOMS = ["global"]
 
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
-
-
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
+    user=User.query.all()
+    for use in user:
+        print(use.username)
+    #user=map(lambda x:x[0][0], user)
+    return render_template('home.html', users=user)
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -69,19 +56,49 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/account")
-@login_required
-def account():
-    return render_template('account.html', title='Account')
+# @app.route("/chat", methods=['GET', 'POST'])
+# def chat():
+#     if !current_user.is_authenticated:
+#         flash('Please login', 'danger')
+#         return redirect(url_for('login'))
+
+#     return render_template("chat.html", username=current_user.username, rooms=rooms, user=user)
+
+
 
 ''' SOCKET.IO EVENTS '''
 
-@socketio.on('message')
-def handleMessage(msg):
-    print("\n\nMessage:", msg, "\n\n")
-    send(msg.split('~')[0] + ": " + msg.split('~')[-1], broadcast=True)
-    
-@app.route('/')
-@app.route('/global-chat')
-def globalChat():
-    return render_template('index.html', title="Global Chat")
+@socketio.on('incoming-msg')
+def on_message(data):
+    """Broadcast messages"""
+
+    msg = data["msg"]
+    username = data["username"]
+    room = data["room"]
+    # Set timestamp
+    time_stamp = time.strftime('%b-%d %I:%M%p', time.localtime())
+    send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
+
+
+@socketio.on('join')
+def on_join(data):
+    """User joins a room"""
+
+    username = data["username"]
+    room = data["room"]
+    join_room(room)
+
+    # Broadcast that new user has joined
+    send({"msg": username + " has joined the " + room + " room."}, room=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    """User leaves a room"""
+
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send({"msg": username + " has left the room"}, room=room)
+
+
