@@ -5,13 +5,21 @@ from chatApp import app, db, bcrypt, socketio
 from chatApp.forms import RegistrationForm, LoginForm
 from chatApp.models import *
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, join_room, leave_room
+import json
+from time import localtime, strftime
 
-ROOMS = ["global"]
+ROOMS = ['potterheads', 'f1', 'MCU stans', 'anything football', 'CS', 'memeGrounds']
 
 @app.route("/")
 @app.route("/home")
 def home():
+    return render_template('home.html', roomList = ROOMS, room = 'global chat')
+
+
+@app.route("/about")
+def about():
+    return render_template('about.html', title='About')
     user=User.query.all()
     for use in user:
         print(use.username)
@@ -66,39 +74,43 @@ def logout():
 
 
 
+# @app.route("/chatroom/<string:roomName>")
+# def chatroom(roomName):
+#     return render_template('room.html', room = roomName, roomList = ROOMS)
+
+
 ''' SOCKET.IO EVENTS '''
 
-@socketio.on('incoming-msg')
-def on_message(data):
-    """Broadcast messages"""
-
-    msg = data["msg"]
-    username = data["username"]
-    room = data["room"]
-    # Set timestamp
-    time_stamp = time.strftime('%b-%d %I:%M%p', time.localtime())
-    send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
-
-
+@socketio.on('message')
+def handleMessage(msg):
+    msgDict = json.loads(msg)
+    msgToDeliver = {'sender':msgDict['sender'], 'content':msgDict['content'], 'timestamp':strftime("%I:%M %p", localtime()), 'room':msgDict['room']}
+    print(f"\n\n{msgDict}\n\n")
+    if(msgDict['room'] == 'GLOBAL'):
+        send(json.dumps(msgToDeliver), broadcast=True)
+    else:
+        send(json.dumps(msgToDeliver), room = msgToDeliver['room'])
+    
 @socketio.on('join')
-def on_join(data):
-    """User joins a room"""
-
-    username = data["username"]
-    room = data["room"]
-    join_room(room)
-
-    # Broadcast that new user has joined
-    send({"msg": username + " has joined the " + room + " room."}, room=room)
-
+def join(data):
+    data = json.loads(data);
+    print('\n\n', data)
+    join_room(data['room'])
+    msgToDeliver = {
+        'sender':'SYSTEM',
+        'content':f"{data['sender']} has joined {data['room']}",
+        'timestamp':strftime('%I:%M %p', localtime())
+    }
+    send(json.dumps(msgToDeliver), room = data['room'])
 
 @socketio.on('leave')
-def on_leave(data):
-    """User leaves a room"""
-
-    username = data['username']
-    room = data['room']
-    leave_room(room)
-    send({"msg": username + " has left the room"}, room=room)
-
-
+def leave(data):
+    data = json.loads(data);
+    print('\n\n', data)
+    leave_room(data['room'])
+    msgToDeliver = {
+        'sender':'SYSTEM',
+        'content':f"{data['sender']} has left {data['room']}",
+        'timestamp':strftime('%I:%M %p', localtime())
+    }
+    send(json.dumps(msgToDeliver), room = data['room'])
