@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5391628bb0b13ce0c676dfde280ba245'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/saharsh/Desktop/chattingApp/chatApp/chapp.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chapp.db'
 # SQLALCHEMY_TRACK_MODIFICATIONS = False
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

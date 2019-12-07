@@ -4,21 +4,9 @@ from chatApp.forms import RegistrationForm, LoginForm
 from chatApp.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_socketio import SocketIO, send
+import json
+from time import localtime, strftime
 
-# posts = [
-#     {
-#         'author': 'Corey Schafer',
-#         'title': 'Blog Post 1',
-#         'content': 'First post content',
-#         'date_posted': 'April 20, 2018'
-#     },
-#     {
-#         'author': 'Jane Doe',
-#         'title': 'Blog Post 2',
-#         'content': 'Second post content',
-#         'date_posted': 'April 21, 2018'
-#     }
-# ]
 
 
 @app.route("/")
@@ -74,12 +62,22 @@ def logout():
 def account():
     return render_template('account.html', title='Account')
 
+
+
+
 ''' SOCKET.IO EVENTS '''
 
 @socketio.on('message')
 def handleMessage(msg):
-    print("\n\nMessage:", msg, "\n\n")
-    send(msg.split('~')[0] + ": " + msg.split('~')[-1], broadcast=True)
+    # print("\n\nMessage:", msg, "\n\n")
+    # send(msg.split('~')[0] + ": " + msg.split('~')[-1], broadcast=True)
+
+    msgDict = json.loads(msg)
+
+    msgToDeliver = {'sender':msgDict['sender'], 'content':msgDict['content'], 'timestamp':strftime("%I:%M %p", localtime())}
+    print(f"\n\n{msgDict}\n\n")
+
+    send(json.dumps(msgToDeliver))
     
 @app.route('/')
 @app.route('/global-chat')
