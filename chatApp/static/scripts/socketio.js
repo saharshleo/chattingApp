@@ -2,9 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connecting
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     var username = document.querySelector(".username").innerHTML;
-    socket.on('connect', () => {
-        socket.send(`${username}~ is connected`);
-    });
+
+    // THIS IS REQUIRED FOR UPDATING SID IN BACKEND
+    // socket.on('connect', () => {
+    //     socket.emit('connect', `${username}~ is connected`);
+    // });
 
     // Display received message
     socket.on('message', (msg) => {
@@ -99,4 +101,50 @@ document.addEventListener('DOMContentLoaded', () => {
 		socket.emit('join', JSON.stringify(join_msg));
 	}
 
+    document.querySelectorAll('.user-list-item').forEach(li => {
+        li.onclick = () => {
+
+            request = {
+                'sender':username,
+                'to':li.innerHTML
+            };
+            socket.emit('request_for_connection', JSON.stringify(request));
+        }
+    })
+
+    socket.on('request_to_connect', (request) => {
+        console.log(`Request to connect: ${request}`);
+        request = JSON.parse(request);
+
+        // FOR SOME REASON, THE CODE BELOW IS NEVER REACHED
+
+        // Alert user that he has been requested. Add an onclick for accepting
+        // For now, accept all incoming requests
+        console.log(`in 'request_to_connect' request was parsed`);
+        accept_request(request['sender']);
+        
+    })
+
+    accept_request = (requester_username) => {
+        console.log("accept_request() called");
+        newRoom = `${requester_username}ROOMW${username}`;
+        accept_msg = {
+            'sender':username,
+            'requester':requester_username,
+            'room':newRoom
+        };
+        socket.emit('accept_request', JSON.stringify(accept_msg));
+        // Redirect to chat screen, or add chatroom somewhere
+        // Edit: the newRoom in this case can be requester.sid
+        // Edit 2: Not today
+        
+        leaveRoom(roomName);
+        joinRoom(newRoom);
+        console.log(`Joining room ${newRoom}`);
+    }
+
+    socket.on('request_accepted', (accepted_msg) => {
+        console.log(`Request was accepted, Details:\n${accepted_msg}`)
+        // Use accepted_msg to join newly created two-person chatroom
+    })
 });

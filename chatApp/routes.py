@@ -3,7 +3,7 @@ from chatApp import app, db, bcrypt, socketio
 from chatApp.forms import RegistrationForm, LoginForm
 from chatApp.models import User
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_socketio import SocketIO, send, join_room, leave_room
+from flask_socketio import SocketIO, send, join_room, leave_room, emit
 import json
 from time import localtime, strftime
 
@@ -12,6 +12,9 @@ ROOMS = ['potterheads', 'f1', 'MCU stans', 'anything football', 'CS', 'memeGroun
 @app.route("/")
 @app.route("/home")
 def home():
+    if current_user.is_authenticated:
+        userList = User.query.all()
+        return render_template('home.html', roomList = ROOMS, room = 'global chat', userList = userList)
     return render_template('home.html', roomList = ROOMS, room = 'global chat')
 
 
@@ -102,3 +105,30 @@ def leave(data):
         'timestamp':strftime('%I:%M %p', localtime())
     }
     send(json.dumps(msgToDeliver), room = data['room'])
+
+@socketio.on('connect')
+def connect():
+    user = User.query.filter_by(username = current_user.username).first()
+    user.last_sid = request.sid
+    db.session.commit()
+    # user.updateSessionID(request.sid)
+    print('\n\n', user)
+
+    
+
+@socketio.on('request_for_connection')
+def request_for_connection(request):
+    request = json.loads(request)
+    print('\n\n', request)
+    # Search for recepient of request, named as recipient
+    recipient = User.query.filter_by(username = request['to']).first()
+    print(f"\n\nIn request_for_connection:\n{recipient}\n\n")
+    emit('request_to_connect', json.dumps(request), room = recipient.last_sid)
+
+@socketio.on('accept_request')
+def accept_request(accept_msg):
+    accept_msg = json.loads(accept_msg)
+    print('\n\n', accept_msg)
+    # Search for sender's entry and use his sid to deliver the request acceptance
+    sender = User.query.filter_by(username = accept_msg['sender']).first()
+    emit('request_accepted', json.dumps(accept_msg), room = sender.last_sid)

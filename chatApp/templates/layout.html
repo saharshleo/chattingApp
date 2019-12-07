@@ -43,6 +43,8 @@
                 
               {% endif %}
             </div>
+
+            
           </div>
         </div>
       </nav>
@@ -70,7 +72,7 @@
               <ul class="list-group">
                 {% if current_user.is_authenticated %}
                   {% for room in roomList %}
-                    <li class="list-group-item list-group-item-light room-opt">{{ room|title }}</li>
+                    <li class="list-group-item list-group-item-light room-opt" style="cursor: pointer;">{{ room|title }}</li>
                   {% endfor %}
                   <a href="{{ url_for('home') }}">Global Chat</a>
                 {% else %}
@@ -80,6 +82,25 @@
             </p>
           </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="content-section">
+              <h4>Registered Users</h4>
+              <p class='text-muted'>Topics
+                <ul class="list-group">
+                  {% if current_user.is_authenticated %}
+                    {% for user in userList %}
+                      <li class="list-group-item list-group-item-light user-list-item" style="cursor: pointer;">{{ user.username }}</li>
+                    {% endfor %}
+                  {% else %}
+                  <p>Log in to view other users</p>
+                  {% endif %}
+                </ul>
+              </p>
+            </div>
+          </div>
+
+
       </div>
     </main>
 

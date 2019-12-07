@@ -13,7 +13,16 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    last_sid = db.Column(db.String(120)) # no idea about str length or uniqueness or nullability
 
     def __repr__(self):
-        return "('{}', '{}', '{}')".format(self.username, self.email, self.password)
+        return "('ID:{}', 'Email:{}', 'Username:{}', 'Last_SID{}')".format(self.id, self.email, self.username, self.last_sid)
+
+    
+class Rooms(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	roomname = db.Column(db.String(250), unique=True, nullable=False)
+	message = db.Column(db.String(250), nullable=False)
+	sender = db.Column(db.String(20), nullable=False)
+	time_stamp = db.Column(db.String(100), nullable=False)
 
