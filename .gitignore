@@ -1,2 +1,4 @@
 chatApp/__pycache__/
 venv/
+.vscode/
+project_env/

@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		socket.emit('join', JSON.stringify(join_msg));
 	}
 
+
+    
     document.querySelectorAll('.user-list-item').forEach(li => {
         li.onclick = () => {
 
