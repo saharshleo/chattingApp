@@ -11,11 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get list of public chat rooms
     publicRooms = [];
-    document.querySelectorAll('room-opt').forEach(li => {
+    document.querySelectorAll('.room-opt').forEach(li => {
         publicRooms.push(li.innerHTML);
+        // console.log(li.innerHTML);
     })
     
-
+    console.log(publicRooms);
 
     // Display received message
     socket.on('message', (msg) => {
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'room':roomName
             };
             if(publicRooms.includes(roomName)) {
+                console.log('sending on public chatroom')
                 msg['receiver'] = null;
             }
             else if(roomName === 'GLOBAL') {
@@ -176,13 +178,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 'receiver':li.innerHTML,
                 'room':newRoom
             };
-            socket.emit('make_new_room', newRoom);
+            socket.emit('make_new_room', JSON.stringify(msg));
             leaveRoom(roomName);
             joinRoom(newRoom);
             console.log(`Joining room ${newRoom}`);
+            roomName = newRoom;
+            document.querySelector('#room-name').innerHTML = li.innerHTML;
         }
-        roomName = newRoom;
-        document.querySelector('#room-name').innerHTML = li.innerHTML;
+        
     })
 
     socket.on('load_history', (msgHistory) => {
