@@ -1,0 +1,171 @@
+.main-column{
+	background-color: #fff;
+	
+}
+.column-layout{ 
+	max-width: 1300px;
+	background-color: #FFF;
+	/*margin: 40px auto 0 auto;*/
+	line-height: 1.65;
+	/*padding: 20px 50px;*/
+	display: flex;
+	background-color: #ffffff;
+
+}
+.top{
+	background-color: #698EB8;
+}
+.left{
+	flex: 2;
+	float: left;
+   	width: 150px;
+    background: white;
+    height: 550px;
+    /* height: max-height; */
+    /* position: absolute; */
+	overflow-y: scroll;
+	overflow-x: hidden; 
+	background-color: #364052;
+	/* margin-left: 5%; */
+}
+
+.left::-webkit-scrollbar * {
+      background:transparent;
+    }
+.left h4
+{
+	color: #ffffff;
+	margin-left: 10%;
+	margin-top: 5%
+}
+
+.right{
+	flex: 7;
+	float: left;
+	width: 450px;
+	/* margin-top : 4%; */
+	font-family: sans-serif;
+    letter-spacing: 0.5px;
+	background: white;
+    height: 500px;
+    /* height: max-height; */
+    
+	/*padding-left:20px;*/
+	background-color: #ede7f6;
+
+}
+.navbar{
+	background-color: #000C29;
+}
+
+.chats{
+	
+    height: 90%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.form-row{
+	height: 5%;
+	margin-top: 1%;
+	display: flex;
+}
+/*
+form-row label{
+	padding-right:10px;
+}
+.form-row input{
+	padding-right:10px;
+	flex:1;
+}*/
+
+.col{
+	float:right;
+}
+
+.contact{
+	width: 80%;
+	margin-top: 5%;
+	margin-left: 10%;
+}
+.senderName h2{
+	color: #ffffff;
+	background-color: #465881;
+	padding-left: 2%;
+	height: 5%;
+}
+/*message box*/
+.Me{ 
+	border-bottom: none;
+	overflow-wrap: break-word;
+	max-width: 100%;
+	height : max-content;
+
+}
+.meActivity{
+	max-height: max-content;
+    float: right;
+    /* max-width: 100%; */
+    overflow-wrap: break-word;
+	padding-top: 4px;
+	padding-left: 10px;
+	padding-bottom: 4px;
+	margin-right: 10px;
+	margin-bottom: 5px;
+	margin-left: 100px;
+	margin-top: 2%;
+	max-width: max-content;
+    background-color: #698EB8;
+    align-self: flex-end;
+}
+
+.meActivity h4{
+	font-size: 14px;
+	margin-right: 10px;
+	overflow-wrap: break-word;
+	color: #fff;
+}
+.meActivity h6{
+	font-size: 10px;
+	margin-right: 10px;
+	line-height: 2px;
+	color: #fff;
+	text-align: right;
+}
+
+.Them{
+	max-width: 100%;
+	border-bottom: none;
+	overflow-wrap: break-word;
+	height : max-content;
+}
+
+.themActivity{
+	
+	max-height: max-content;
+	border-bottom: none;
+	float: left;
+	padding-top: 4px;
+	margin-top: 2%;
+	padding-right: 10px;
+	padding-bottom: 4px;
+	margin-right: 100px;
+	margin-bottom: 5px;
+	max-width: max-content;
+	background-color: #ffffff;
+	margin-left: 2%;
+}
+
+.themActivity h4{
+	font-size: 14px;
+	margin-left: 10px;
+	overflow-wrap: break-word;
+	color: #000;
+}
+.themActivity h6{
+	font-size: 10px;
+	margin-left: 10px;
+	line-height: 2px;
+	color: #000;
+}
+
+/* @media() */

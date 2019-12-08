@@ -26,17 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("I don't know what to do");
         }
         if(msg['sender'] === 'SYSTEM') {
-            let msgDisplay = document.createElement('p');
+            let msgDisplay = document.createElement('h4');
             msgDisplay.innerHTML = msg['content'];
-            let listItem = document.createElement('li');
+            let listItem = document.createElement('div');
             listItem.appendChild(msgDisplay);
+            listItem.classList.add('themActivity');
             document.getElementById('messages-list').appendChild(listItem);
+
         }
         else if(msg['room'] === roomName) {
-            let msgDisplay = document.createElement('p');
-            msgDisplay.innerText = `${msg["sender"]} (${msg["timestamp"]}): ${msg["content"]}`;
-            let listItem = document.createElement('li');
+            let msgDisplay = document.createElement('h4');
+            // msgDisplay.innerText = `${msg["sender"]} (${msg["timestamp"]}): ${msg["content"]}`;
+            msgDisplay.innerHTML=msg['content'];
+            let timestamp = document.createElement('h6');
+            timestamp.innerHTML = msg['timestamp'];
+            let listItem = document.createElement('div');
             listItem.appendChild(msgDisplay);
+            listItem.appendChild(timestamp);
+            if(msg['sender'] === username) {
+                listItem.classList.add('meActivity');    
+            }
+            else {
+                listItem.classList.add('themActivity');
+            }
+            
             document.getElementById('messages-list').appendChild(listItem);
         }
     });
@@ -222,11 +235,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 }
             }
-            let msgDisplay = document.createElement('p');
+            let msgDisplay = document.createElement('h4');
             msgDisplay.innerHTML = msgHistory[msgKey]['content'];
-            let listItem = document.createElement('li');
+            let timestamp = document.createElement('h6');
+            timestamp = msgHistory[msgKey]['timestamp'];
+            let listItem = document.createElement('div');
             listItem.appendChild(msgDisplay);
+            // listItem.appendChild(timestamp);
             document.getElementById('messages-list').appendChild(listItem);
+
+            if(msgHistory[msgKey]['sender'] === username) {
+                listItem.classList.add('meActivity');
+            }
+            // 
+            else {
+                listItem.classList.add('themActivity');
+            }
+            
         }
     });
 

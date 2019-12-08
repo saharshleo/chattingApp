@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+
+
+<div class="main-column container">
+
+    <div class="column-layout">
+        <div class="left">
+            <h4>Users</h4>
+
+            <!-- <a href="#" class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt" style="cursor: pointer;width:90%;" >Akshat Shah</a> -->
+            <ul class="list-group">
+                {% if current_user.is_authenticated %}
+                {% for user in userList %}
+                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
+                    style="cursor: pointer;width:90%;">{{ user.username }}</li>
+                <!-- User shouldn't see himself -->
+                {% endfor %}
+                {% else %}
+                <p>Log in to view other users</p>
+                {% endif %}
+            </ul>
+            <div class="dropdown-divider"></div>
+            <h4>Public Chatrooms</h4>
+            <ul class="list-group room-list">
+                {% if current_user.is_authenticated %}
+                {% for room in roomList %}
+                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
+                    style="cursor: pointer;width:90%;">{{ room|title }}</li>
+                {% endfor %}
+                <a href="{{ url_for('home') }}">Global Chat</a>
+                {% else %}
+                <p>Log in to view rooms</p>
+                {% endif %}
+            </ul>
+            <div class="contact">
+                <a href="#" class="list-group-item-dark">Saharsh Jain</a>
+            </div>
+        </div>
+        <div class="right">
+            <div class="senderName">
+                <div class="container">
+
+                    <h2 id="room-name">Global Chat</h2>
+                </div>
+            </div>
+            <div class="chats">
+                <div class="d-flex flex-column" id="messages-list">
+
+                    
+                            <div class="themActivity">
+                                    <h4> pakaa mat (^_^) hdhdhh hhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhh
+                                        hhhhhhhhhhhhhhh hhhhhhhhhhhhhhhh hhhhhhhhhh hhhhhhhhhh hhhhhhhhhhhhhh
+                                        hhhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+                                        hhhhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh </h4>
+                                    <h6> 3 hours ago...</h6>
+                                    </div>
+            
+            
+                                <div class="themActivity">
+                                    <h4> pakaa mat</h4>
+                                    <h6> 3 hours ago...</h6>
+                                </div>
+            
+                                <div class="themActivity">
+                                    <h4> pakaa mat</h4>
+                                    <h6> 3 hours ago...</h6>
+                                </div>
+            
+            
+            
+                                <div class="meActivity">
+                                    <h4> Sunne </h4>
+                                    <h6> 3 hours ago...</h6>
+                                </div>
+            
+                                <div class="meActivity">
+                                    <h4> pakaa mat (^_^) hdhdhh hhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhh
+                                        hhhhhhhhhhhhhhh hhhhhhhhhhhhhhhh hhhhhhhhhh hhhhhhhhhh hhhhhhhhhhhhhh
+                                        hhhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+                                        hhhhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh </h4>
+                                    <h6> 3 hours ago...</h6>
+                                    </div>
+            
+            
+                                <div class="themActivity">
+                                    <h4> pakaa mat</h4>
+                                    <h6> 3 hours ago...</h6>
+                                </div>
+            
+                    
+
+                    
+
+                </div>
+            </div>
+            <!--send message form and button -->
+            <div class="input-group mt-2 mb-3">
+                <input type="text" name="" id="user-input" class="form-control" placeholder="Enter your message">
+                <div class="input-group-append">
+                    <input type="submit" id="send-btn" class="btn btn-primary btn-lg" value="Send">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='scripts/socketio.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+    
+<script>
+        var roomName = 'GLOBAL';
+      </script>
+{% endblock %}
