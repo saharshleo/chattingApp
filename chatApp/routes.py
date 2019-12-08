@@ -76,12 +76,12 @@ def account():
 def handleMessage(msg):
 	msgDict = json.loads(msg)
 	msgToDeliver = {'sender':msgDict['sender'], 'receiver':msgDict['receiver'], 'content':msgDict['content'], 'timestamp':strftime("%I:%M %p", localtime()), 'room':msgDict['room']}
-	print(f"\n\n{msgDict}\n\n")
+	print("\n\n{}\n\n".format(msgDict))
 	if(msgDict['room'] == 'GLOBAL'):
 		send(json.dumps(msgToDeliver), broadcast=True)
-	elif msgDict['room'] in ROOMS:
+	elif msgDict['room'].lower() in ROOMS:
 		send(json.dumps(msgToDeliver), room = msgToDeliver['room'])
-	elif msgDict['room'] not in ROOMS:
+	elif msgDict['room'].lower() not in ROOMS:
 		roomname1 = msgDict['receiver'] + msgDict['sender']
 		row1 = Rooms.query.filter_by(roomname=msgDict['room']).first()
 		row2 = Rooms.query.filter_by(roomname=roomname1).first()
@@ -107,7 +107,7 @@ def join(data):
 	join_room(data['room'])
 	msgToDeliver = {
 		'sender':'SYSTEM',
-		'content':f"{data['sender']} has joined {data['room']}",
+		'content':"{} has joined {}".format(data['sender'], data['room']),
 		'timestamp':strftime('%I:%M %p', localtime())
 	}
 	send(json.dumps(msgToDeliver), room = data['room'])
@@ -119,7 +119,7 @@ def leave(data):
 	leave_room(data['room'])
 	msgToDeliver = {
 		'sender':'SYSTEM',
-		'content':f"{data['sender']} has left {data['room']}",
+		'content':"{} has left {}".format(data['sender'], data['room']),
 		'timestamp':strftime('%I:%M %p', localtime())
 	}
 	send(json.dumps(msgToDeliver), room = data['room'])
@@ -140,7 +140,7 @@ def request_for_connection(request):
 	print('\n\n', request)
 	# Search for recepient of request, named as recipient
 	recipient = User.query.filter_by(username = request['to']).first()
-	print(f"\n\nIn request_for_connection:\n{recipient}\n\n")
+	print("\n\nIn request_for_connection:\n{}\n\n".format(recipient))
 	emit('request_to_connect', json.dumps(request), room = recipient.last_sid)
 
 @socketio.on('accept_request')
