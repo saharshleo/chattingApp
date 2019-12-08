@@ -91,6 +91,7 @@
                   {% if current_user.is_authenticated %}
                     {% for user in userList %}
                       <li class="list-group-item list-group-item-light user-list-item" style="cursor: pointer;">{{ user.username }}</li>
+                      <!-- User shouldn't see himself -->
                     {% endfor %}
                   {% else %}
                   <p>Log in to view other users</p>

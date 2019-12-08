@@ -59,9 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             else if(roomName === 'GLOBAL') {
                 msg['receiver'] = null;
+                console.log('sending to global chat');
             }
             else {
-                msg['receiver'] = document.querySelector('#room-name');
+                msg['receiver'] = document.querySelector('#room-name').innerHTML;
+                console.log(`sending to ${msg['receiver']}`)
             }
             socket.send(JSON.stringify(msg));
             userInput.value="";
@@ -172,18 +174,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.user-list-item').forEach(li => {
         li.onclick = () => {
-            newRoom = `${username}_${li.innerHTML}`;
+            // newRoom = `${username}_${li.innerHTML}`;
+            if(username < li.innerHTML) {
+                newRoom = `${username}_${li.innerHTML}`;
+            }
+            else {
+                newRoom = `${li.innerHTML}_${username}`;
+            }
             msg = {
                 'sender':username,
                 'receiver':li.innerHTML,
                 'room':newRoom
             };
-            socket.emit('make_new_room', JSON.stringify(msg));
+            
             leaveRoom(roomName);
             joinRoom(newRoom);
             console.log(`Joining room ${newRoom}`);
             roomName = newRoom;
             document.querySelector('#room-name').innerHTML = li.innerHTML;
+            socket.emit('make_new_room', JSON.stringify(msg));
         }
         
     })
@@ -197,6 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
             else if(msgKey === '1') {
                 if(roomName === msgHistory[msgKey]['room']) {
                     // Correct case, continue
+                    if(document.querySelector('#messages-list').childElementCount === 1) {
+                        // Load history
+                        console.log('Chatroom just opened, load history');
+                    }
+                    else {
+                        // History is already present
+                        console.log(`History already present, don't load history`);
+                        return;
+                    }
                 }
                 else {
                     // Incorrect

@@ -23,7 +23,7 @@ class Rooms(db.Model):
 	__bind__ = 'rooms'
 	id = db.Column(db.Integer, primary_key=True)
 	roomname = db.Column(db.String(250), unique=True)
-	message = db.Column(db.String(50000), default='{"0":None}')
+	message = db.Column(db.String(50000), default='{"0":""}')
 	count = db.Column(db.Integer, default=0)
 	
 	def __repr__(self):

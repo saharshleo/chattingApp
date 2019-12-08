@@ -7,7 +7,7 @@ from flask_socketio import SocketIO, send, join_room, leave_room, emit
 import json
 from time import localtime, strftime
 
-ROOMS = ['potterheads', 'f1', 'MCU stans', 'anything football', 'CS', 'memeGrounds']
+ROOMS = ['potterheads', 'f1', 'mcu stans', 'anything football', 'cs', 'memegrounds']
 
 @app.route("/")
 @app.route("/home")
@@ -81,19 +81,23 @@ def handleMessage(msg):
 		send(json.dumps(msgToDeliver), broadcast=True)
 	elif msgDict['room'].lower() in ROOMS:
 		send(json.dumps(msgToDeliver), room = msgToDeliver['room'])
-	elif msgDict['room'].lower() not in ROOMS:
-		roomname1 = msgDict['receiver'] + msgDict['sender']
+	elif msgDict['room'].lower() not in ROOMS:	# One-to-one
+		# roomname1 = msgDict['receiver'] + '_' + msgDict['sender']
 		row1 = Rooms.query.filter_by(roomname=msgDict['room']).first()
-		row2 = Rooms.query.filter_by(roomname=roomname1).first()
+		# row2 = Rooms.query.filter_by(roomname=roomname1).first()
+		print("Message from {} to {}".format(msgDict['sender'], msgDict['receiver']));
 		if row1:
 			row = row1
-		elif row2:
-			row = row2
+		# if row2:
+			# row = row2
 		else:
 			print("/nerror in handle message/n")
 			return 
 		row.count = row.count + 1
+		print("row.count:", row.count)
+		print("row.message", row.message)
 		dict1 = json.loads(row.message)
+		
 		dict1[row.count] = msgDict
 		row.message = json.dumps(dict1)
 		db.session.commit()
@@ -155,15 +159,15 @@ def accept_request(accept_msg):
 @socketio.on('make_new_room')
 def make_new_room(room_name):
 	room_name = json.loads(room_name)
-	room_name1 = room_name['receiver'] + room_name['sender']
-	row1 = Rooms.query.filter_by(roomname=room_name1).first()
+	# room_name1 = room_name['receiver'] + '_' + room_name['sender']
+	# row1 = Rooms.query.filter_by(roomname=room_name1).first()
 	row2 = Rooms.query.filter_by(roomname=room_name['room']).first()
-	if not row1 and not row2:
+	if not row2:
 		row = Rooms(roomname=room_name['room'])
 		db.session.add(row)
 		db.session.commit()
-	elif row1:
-		emit('load_history', row1.message, room=row1.roomname)
+	# elif row1:
+		# emit('load_history', row1.message, room=row1.roomname)
 	elif row2:
 		emit('load_history', row2.message, room=row2.roomname)
 	else:
