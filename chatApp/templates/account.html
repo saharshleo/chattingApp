@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>{{ current_user.username }}</h1>
+	<div class="container" style="padding-top: 20px">
+		<img src="{{ url_for('static', filename='nature.jpg')}}" class="rounded-circle" width="236" height="136"; style="padding-top: 20px">
+		<h1>{{ current_user.username }}</h1>
+		<h3>Page under Construction</h3>
+	</div>
 {% endblock content %}

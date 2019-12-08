@@ -3,7 +3,7 @@
 
 
 
-<div class="main-column container">
+<div class=" container" style="padding-top: 20px;">
 
     <div class="column-layout">
         <div class="left">
@@ -18,31 +18,35 @@
                 <!-- User shouldn't see himself -->
                 {% endfor %}
                 {% else %}
-                <p>Log in to view other users</p>
+                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
+                    style="width:90%;">Log in to view Registered users</li>
                 {% endif %}
             </ul>
             <div class="dropdown-divider"></div>
             <h4>Public Chatrooms</h4>
             <ul class="list-group room-list">
                 {% if current_user.is_authenticated %}
-                {% for room in roomList %}
-                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
-                    style="cursor: pointer;width:90%;">{{ room|title }}</li>
-                {% endfor %}
-                <a href="{{ url_for('home') }}">Global Chat</a>
+                    <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
+                        style="cursor: pointer;width:90%; color: #444444"><a href="{{ url_for('home') }}" style="color: #444444">Global Chat</a></li>
+                    {% for room in roomList %}
+                        <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
+                            style="cursor: pointer;width:90%;">{{ room|title }}</li>
+                    {% endfor %}
                 {% else %}
-                <p>Log in to view rooms</p>
+                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
+                    style="width:90%;">Log in to view available Chat Rooms</li>
                 {% endif %}
             </ul>
-            <div class="contact">
+            <!-- <div class="contact">
                 <a href="#" class="list-group-item-dark">Saharsh Jain</a>
-            </div>
+            </div> -->
         </div>
         <div class="right">
             <div class="senderName">
-                <div class="container">
-
-                    <h2 id="room-name">Global Chat</h2>
+                <div class="container" style="padding: 5px;">
+                    <div>
+                        <h2 id="room-name" style="padding: 5px;"><!-- <img src="{{url_for('static', filename='nature.jpg')}}" class="rounded-circle" width="54" height="36" > -->Global Chat</h2>
+                    </div>
                 </div>
             </div>
             <div class="chats">
@@ -51,7 +55,7 @@
             </div>
             <!--send message form and button -->
             <div class="input-group mt-2 mb-3">
-                <input type="text" name="" id="user-input" class="form-control" placeholder="Enter your message">
+                <input type="text" name="" id="user-input" class="form-control" placeholder="Enter your message" autofocus>
                 <div class="input-group-append">
                     <input type="submit" id="send-btn" class="btn btn-primary btn-lg" value="Send">
                 </div>
