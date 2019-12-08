@@ -75,13 +75,31 @@ def account():
 @socketio.on('message')
 def handleMessage(msg):
     msgDict = json.loads(msg)
-    msgToDeliver = {'sender':msgDict['sender'], 'content':msgDict['content'], 'timestamp':strftime("%I:%M %p", localtime()), 'room':msgDict['room']}
+    msgToDeliver = {'sender':msgDict['sender'], 'receiver':msgDict['receiver'], 'content':msgDict['content'], 'timestamp':strftime("%I:%M %p", localtime()), 'room':msgDict['room']}
     print(f"\n\n{msgDict}\n\n")
     if(msgDict['room'] == 'GLOBAL'):
         send(json.dumps(msgToDeliver), broadcast=True)
-    else:
+    elif msgDict['room'] in ROOMS:
         send(json.dumps(msgToDeliver), room = msgToDeliver['room'])
-    
+    elif msgDict['room'] not in ROOMS:
+        roomname1 = msgDict['receiver'] + msgDict['sender']
+        row1 = Rooms.query.filter_by(roomname=msgDict['room']).first()
+        row2 = Rooms.query.filter_by(roomname=roomname1).first()
+        if row1:
+            row = row1
+        elif row2:
+            row = row2
+        else:
+            print("/nerror in handle message/n")
+            return 
+        row.count = row.count + 1
+        dict1 = json.loads(row.message)
+        dict1[row.count] = msgDict
+        row.message = json.dumps(dict1)
+        db.session.commit()
+        send(json.dumps(msgToDeliver), room = msgToDeliver['room'])
+
+
 @socketio.on('join')
 def join(data):
     data = json.loads(data);
@@ -132,3 +150,21 @@ def accept_request(accept_msg):
     # Search for sender's entry and use his sid to deliver the request acceptance
     sender = User.query.filter_by(username = accept_msg['sender']).first()
     emit('request_accepted', json.dumps(accept_msg), room = sender.last_sid)
+
+
+@socketio.on('make_new_room')
+def make_new_room(room_name):
+    room_name1 = room_name['receiver'] + room_name['sender']
+    row1 = Rooms.query.filter_by(roomname=room_name1).first()
+    row2 = Rooms.query.filter_by(roomname=room_name['room']).first()
+    if !row1 and !row2:
+        row = Rooms(roomname=room_name['room'])
+        db.session.add(row)
+        db.session.commit()
+    elif row1:
+        emit('load_history', row1.message, room=row1.roomname)
+    elif row2:
+        emit('load_history', row2.message, room=row2.roomname)
+    else:
+        print("/nNot a new room/n")
+

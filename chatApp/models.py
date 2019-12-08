@@ -21,8 +21,7 @@ class User(UserMixin, db.Model):
     
 class Rooms(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	roomname = db.Column(db.String(250), unique=True, nullable=False)
-	message = db.Column(db.String(250), nullable=False)
-	sender = db.Column(db.String(20), nullable=False)
-	time_stamp = db.Column(db.String(100), nullable=False)
-
+	roomname = db.Column(db.String(250), unique=True)
+	message = db.Column(db.String(50000), default='{"0":None}')
+    count = db.Column(db.Integer, default=0)
+	
