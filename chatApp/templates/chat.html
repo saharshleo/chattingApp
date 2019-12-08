@@ -13,8 +13,10 @@
             <ul class="list-group">
                 {% if current_user.is_authenticated %}
                 {% for user in userList %}
-                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
-                    style="cursor: pointer;width:90%;">{{ user.username }}</li>
+                {% if user.username != current_user %}
+                    <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
+                        style="cursor: pointer;width:90%;">{{ user.username }}</li>
+                {% endif %}
                 <!-- User shouldn't see himself -->
                 {% endfor %}
                 {% else %}
@@ -49,7 +51,7 @@
                     </div>
                 </div>
             </div>
-            <div class="chats">
+            <div class="chats" id="rightid">
                 <div class="d-flex flex-column" id="messages-list">
                 </div>
             </div>

@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             document.getElementById('messages-list').appendChild(listItem);
         }
+        scrollDownChatWindow();
     });
 
     // Select user input field and send button from DOM
@@ -253,6 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
         }
+        scrollDownChatWindow();
     });
 
+    function scrollDownChatWindow() {
+        const chatWindow = document.querySelector("#rightid");
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
 });
