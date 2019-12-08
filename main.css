@@ -1,56 +1,94 @@
 .main-column{
+	background-color: #ba68c8;
 	
 }
 .column-layout{ 
 	max-width: 1300px;
 	background-color: #FFF;
-	margin: 40px auto 0 auto;
+	/*margin: 40px auto 0 auto;*/
 	line-height: 1.65;
-	padding: 20px 50px;
+	/*padding: 20px 50px;*/
 	display: flex;
+	background-color: #ffffff;
+
+}
+.top{
+	background-color: #698EB8;
 }
 .left{
 	flex: 2;
 	float: left;
    	width: 150px;
     background: white;
-    height: 500px;
+    height: 550px;
 	overflow-y: scroll;
-	overflow-x: hidden;    	
+	overflow-x: hidden; 
+	background-color: #364052;
+	margin-left: 5%;
+}
+
+.left::-webkit-scrollbar * {
+      background:transparent;
+    }
+.left h3
+{
+	color: #ffffff;
+	margin-left: 10%;
+	margin-top: 5%
 }
 
 .right{
 	flex: 7;
 	float: left;
-	max-width: 500 px;
+	width: 450px;
 	margin-top = 4%;
 	font-family: sans-serif;
 	letter-spacing: 0.5px;
 	background: white;
 	height: 500px;
-	padding-left:20px;
+	/*padding-left:20px;*/
+	background-color: #ede7f6;
+
+}
+.navbar{
+	background-color: #000C29;
 }
 
 .chats{
 	
-    height: 400px;
+    height: 90%;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 .form-row{
-	margin-top: 10px;
-	margin-right: 20px;
+	height: 5%;
+	margin-top: 1%;
 	display: flex;
 }
+/*
 form-row label{
 	padding-right:10px;
 }
 .form-row input{
 	padding-right:10px;
 	flex:1;
+}*/
+
+.col{
+	float right;
 }
 
-
+.contact{
+	width: 80%;
+	margin-top: 5%;
+	margin-left: 10%;
+}
+.senderName h2{
+	color: #ffffff;
+	background-color: #465881;
+	padding-left: 2%;
+	height: 5%;
+}
 /*message box*/
 .Me{ 
 	border-bottom: none;
@@ -68,8 +106,9 @@ form-row label{
 	margin-right: 10px;
 	margin-bottom: 5px;
 	margin-left: 100px;
+	margin-top: 2%;
 	max-width: max-content;
-	background-color: #007bff;
+	background-color: #698EB8;
 }
 
 .meActivity h4{
@@ -99,25 +138,27 @@ form-row label{
 	border-bottom: none;
 	float: left;
 	padding-top: 4px;
+	margin-top: 2%;
 	padding-right: 10px;
 	padding-bottom: 4px;
 	margin-right: 100px;
 	margin-bottom: 5px;
 	max-width: max-content;
-	background-color: #007bff;
+	background-color: #ffffff;
+	margin-left: 2%;
 }
 
 .themActivity h4{
 	font-size: 14px;
 	margin-left: 10px;
 	overflow-wrap: break-word;
-	color: #fff;
+	color: #000;
 }
 .themActivity h6{
 	font-size: 10px;
 	margin-left: 10px;
 	line-height: 2px;
-	color: #fff;
+	color: #000;
 }
 
 
