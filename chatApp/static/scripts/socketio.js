@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     //     socket.emit('connect', `${username}~ is connected`);
     // });
 
+
+    // Get list of public chat rooms
+    publicRooms = [];
+    document.querySelectorAll('room-opt').forEach(li => {
+        publicRooms.push(li.innerHTML);
+    })
+    
+
+
     // Display received message
     socket.on('message', (msg) => {
         console.log(`Message received: ${msg}`);
@@ -39,10 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
     sendMessage = () => {
         if(userInput.value !== '') {
             msg = {
-                sender:username,
-                content:userInput.value,
+                'sender':username,
+                'content':userInput.value,
+                'room':roomName
             };
-            msg['room'] = roomName;
+            if(publicRooms.includes(roomName)) {
+                msg['receiver'] = null;
+            }
+            else if(roomName === 'GLOBAL') {
+                msg['receiver'] = null;
+            }
+            else {
+                msg['receiver'] = document.querySelector('#room-name');
+            }
             socket.send(JSON.stringify(msg));
             userInput.value="";
         }
@@ -102,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 
-    
-    document.querySelectorAll('.user-list-item').forEach(li => {
+
+    /* document.querySelectorAll('.user-list-item').forEach(li => {
         li.onclick = () => {
 
             request = {
@@ -148,5 +166,47 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('request_accepted', (accepted_msg) => {
         console.log(`Request was accepted, Details:\n${accepted_msg}`)
         // Use accepted_msg to join newly created two-person chatroom
+    }) */
+
+    document.querySelectorAll('.user-list-item').forEach(li => {
+        li.onclick = () => {
+            newRoom = `${username}_${li.innerHTML}`;
+            msg = {
+                'sender':username,
+                'receiver':li.innerHTML,
+                'room':newRoom
+            };
+            socket.emit('make_new_room', newRoom);
+            leaveRoom(roomName);
+            joinRoom(newRoom);
+            console.log(`Joining room ${newRoom}`);
+        }
+        roomName = newRoom;
+        document.querySelector('#room-name').innerHTML = li.innerHTML;
     })
+
+    socket.on('load_history', (msgHistory) => {
+        msgHistory = JSON.parse(msgHistory);
+        for(msgKey in msgHistory) {
+            if(msgKey === '0') {
+                continue;
+            }
+            else if(msgKey === '1') {
+                if(roomName === msgHistory[msgKey]['room']) {
+                    // Correct case, continue
+                }
+                else {
+                    // Incorrect
+                    console.log('History received was not of current room')
+                    break;
+                }
+            }
+            let msgDisplay = document.createElement('p');
+            msgDisplay.innerHTML = msgHistory[msgKey]['content'];
+            let listItem = document.createElement('li');
+            listItem.appendChild(msgDisplay);
+            document.getElementById('messages-list').appendChild(listItem);
+        }
+    });
+
 });

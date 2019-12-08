@@ -69,7 +69,7 @@
           <div class="content-section">
             <h3>Public Chat Rooms</h3>
             <p class='text-muted'>Topics
-              <ul class="list-group">
+              <ul class="list-group room-list">
                 {% if current_user.is_authenticated %}
                   {% for room in roomList %}
                     <li class="list-group-item list-group-item-light room-opt" style="cursor: pointer;">{{ room|title }}</li>
