@@ -1,5 +1,7 @@
 # Chatting Web App
 
+Entire documentation can be found ![**here**](https://github.com/saharshleo/chattingApp/blob/master/docs/Chat%20App%20Doc.pdf)
+
 |![register](https://github.com/saharshleo/chattingApp/blob/master/docs/register.jpg)|![login](https://github.com/saharshleo/chattingApp/blob/master/docs/login.jpg)|
 |:---:|:---:|
 
