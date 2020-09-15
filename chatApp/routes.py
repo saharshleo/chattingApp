@@ -12,10 +12,8 @@ ROOMS = ['potterheads', 'f1', 'mcu stans', 'anything football', 'cs', 'memegroun
 @app.route("/")
 @app.route("/home")
 def home():
-	if current_user.is_authenticated:
-		userList = User.query.all()
-		return render_template('chat.html', roomList = ROOMS, room = 'global chat', userList = userList)
-	return render_template('chat.html', roomList = ROOMS, room = 'global chat')
+	return render_template('index.html')
+	
 
 @app.route("/chat")
 def chat():
