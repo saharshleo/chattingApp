@@ -7,47 +7,42 @@
 
     <div class="column-layout">
         <div class="left">
-            <h4>Users</h4>
-
-            <!-- <a href="#" class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt" style="cursor: pointer;width:90%;" >Akshat Shah</a> -->
+            <h4>Chats</h4>
             <ul class="list-group">
-                {% if current_user.is_authenticated %}
-                {% for user in userList %}
-                {% if user.username != current_user %}
-                    <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
-                        style="cursor: pointer;width:90%;">{{ user.username }}</li>
-                {% endif %}
-                <!-- User shouldn't see himself -->
-                {% endfor %}
-                {% else %}
-                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
-                    style="width:90%;">Log in to view Registered users</li>
+                {% if chat_list %}
+                    {% for chat in chat_list %}
+                        
+                        <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark user-list-item"
+                            style="cursor: pointer;width:90%;">
+                            {{ chat.chat_name }}
+                        </li>
+                        
+                    {% endfor %}
                 {% endif %}
             </ul>
             <div class="dropdown-divider"></div>
             <h4>Public Chatrooms</h4>
             <ul class="list-group room-list">
-                {% if current_user.is_authenticated %}
+                {% if False and current_user.is_authenticated %}
+                <!-- Temporary, will sort this out later -->
                     <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
                         style="cursor: pointer;width:90%; color: #444444"><a href="{{ url_for('home') }}" style="color: #444444">Global Chat</a></li>
+                    
                     {% for room in roomList %}
                         <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
                             style="cursor: pointer;width:90%;">{{ room|title }}</li>
                     {% endfor %}
-                {% else %}
-                <li class="ml-3 mr-3 mb-2 list-group-item list-group-item-action list-group-item-dark room-opt"
-                    style="width:90%;">Log in to view available Chat Rooms</li>
+                
                 {% endif %}
             </ul>
-            <!-- <div class="contact">
-                <a href="#" class="list-group-item-dark">Saharsh Jain</a>
-            </div> -->
+            
         </div>
+        <!-- 
         <div class="right">
             <div class="senderName">
                 <div class="container" style="padding: 5px;">
                     <div>
-                        <h2 id="room-name" style="padding: 5px;"><!-- <img src="{{url_for('static', filename='nature.jpg')}}" class="rounded-circle" width="54" height="36" > -->Global Chat</h2>
+                        <h2 id="room-name" style="padding: 5px;">Global Chat</h2>
                     </div>
                 </div>
             </div>
@@ -55,7 +50,7 @@
                 <div class="d-flex flex-column" id="messages-list">
                 </div>
             </div>
-            <!--send message form and button -->
+            
             <div class="input-group mt-2 mb-3">
                 <input type="text" name="" id="user-input" class="form-control" placeholder="Enter your message" autofocus>
                 <div class="input-group-append">
@@ -63,6 +58,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 </div>
 <script src="{{ url_for('static', filename='scripts/socketio.js')}}"></script>

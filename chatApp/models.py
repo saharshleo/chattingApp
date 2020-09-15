@@ -20,10 +20,10 @@ class User(UserMixin, db.Model):
 	email = db.Column(db.String(120), unique=True, nullable=False)
 	password = db.Column(db.String(60), nullable=False)
 	messages = db.relationship('Message', backref='user', lazy=True)
-	rooms = db.relationship('Room', secondary=room_user, backref='user', lazy=True)
+	rooms = db.relationship('Room', secondary=room_user)
 
 	def __repr__(self):
-		return "User<ID:{}, Email:{}, Username:{}>".format(self.user_id, self.email, self.username)
+		return "User<ID:{}, Email:{}, Username:{}>".format(self.id, self.email, self.username)
 
 
 class Room(db.Model):
@@ -31,7 +31,7 @@ class Room(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	room_name = db.Column(db.String(255), default="Chat")
 	messages = db.relationship('Message', backref='room', lazy=True)
-	users = db.relationship('User', secondary=room_user, backref='room', lazy=True)
+	users = db.relationship('User', secondary=room_user)
 
 	def __repr__(self):
 		return "Room<ID:{}, Room name:{}>".format(self.id, self.room_name)

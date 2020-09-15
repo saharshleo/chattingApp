@@ -5,3 +5,5 @@ project_env/
 *.db
 chatApp/__init__.py
 *.pyc
+db_try.py
+db_reset.py
