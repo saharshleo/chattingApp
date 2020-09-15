@@ -1,29 +1,30 @@
-# Chatting Web App
+# Chatting Web App  [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)  
+A simplistic browser-based chatting application, made using Flask and SocketIO.
 
-Entire documentation can be found ![**here**](https://github.com/saharshleo/chattingApp/blob/master/docs/Chat%20App%20Doc.pdf)
+The documentation can be found ![**here**](https://github.com/saharshleo/chattingApp/blob/master/docs/Chat%20App%20Doc.pdf)
 
 ## Current Features:
-* User Authentication
 * Global chat room
 * Public chat rooms on particular topics
 * Peer to peer chat
+* User Authentication
 * Storing chat history of peer to peer chats
 
 ## Tools Used:
 1. HTML, CSS
-2. Bootstrap CSS
+2. [Bootstrap CSS](https://getbootstrap.com/)
 3. JavaScript
-    * Socket-IO Library
+    * [Socket-IO](https://socket.io/)
 4. Python libraries and frameworks
-    * Flask web framework
-    * Flask SQLAlchemy
-    * Flask Bcyrpt
-    * Flask Socket IO
-    * Flask WTForms
-    * Flash Login
+    * The [Flask web framework](https://flask.palletsprojects.com/en/1.1.x/)
+    * [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
+    * [Flask Bcyrpt](https://flask-bcrypt.readthedocs.io/en/latest/)
+    * [Flask Socket IO](https://flask-socketio.readthedocs.io/en/latest/)
+    * [Flask WTForms](https://flask-wtf.readthedocs.io/en/stable/)
+    * [Flash Login](https://flask-login.readthedocs.io/en/latest/)
     
     
-## File Structure
+## Directory Structure
     .
     ├── run.py                    # File to be run
     ├── chatApp                  
@@ -41,6 +42,8 @@ Entire documentation can be found ![**here**](https://github.com/saharshleo/chat
     │   ├── Chat App Doc.pdf      # Documentation
     │   └── imgs for readme       
     └── README.md 
+    │   .gitignore
+
 
 ## Authentication Page
 |![register](https://github.com/saharshleo/chattingApp/blob/master/docs/register.jpg)|![login](https://github.com/saharshleo/chattingApp/blob/master/docs/login.jpg)|
