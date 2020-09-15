@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from chatApp import app, db, bcrypt, socketio
 from chatApp.forms import RegistrationForm, LoginForm
-from chatApp.models import User, Rooms
+from chatApp.models import User, Room
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_socketio import SocketIO, send, join_room, leave_room, emit
 import json
@@ -90,7 +90,7 @@ def handleMessage(msg):
 		send(json.dumps(msgToDeliver), room = msgToDeliver['room'])
 	elif msgDict['room'].lower() not in ROOMS:	# One-to-one
 		# roomname1 = msgDict['receiver'] + '_' + msgDict['sender']
-		row1 = Rooms.query.filter_by(roomname=msgDict['room']).first()
+		row1 = Room.query.filter_by(roomname=msgDict['room']).first()
 		# row2 = Rooms.query.filter_by(roomname=roomname1).first()
 		print("Message from {} to {}".format(msgDict['sender'], msgDict['receiver']));
 		if row1:
@@ -168,9 +168,9 @@ def make_new_room(room_name):
 	room_name = json.loads(room_name)
 	# room_name1 = room_name['receiver'] + '_' + room_name['sender']
 	# row1 = Rooms.query.filter_by(roomname=room_name1).first()
-	row2 = Rooms.query.filter_by(roomname=room_name['room']).first()
+	row2 = Room.query.filter_by(roomname=room_name['room']).first()
 	if not row2:
-		row = Rooms(roomname=room_name['room'])
+		row = Room(roomname=room_name['room'])
 		db.session.add(row)
 		db.session.commit()
 	# elif row1:
